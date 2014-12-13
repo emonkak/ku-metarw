@@ -68,6 +68,13 @@ endfunction
 
 
 
+function! ku#metarw#acc_valid_p(source_name_ext, item, sep)  "{{{2
+  return a:sep ==# ku#path_separator() || a:sep ==# ':'
+endfunction
+
+
+
+
 
 
 
