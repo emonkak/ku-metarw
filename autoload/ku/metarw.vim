@@ -61,8 +61,15 @@ function! ku#metarw#gather_items(source_name_ext, pattern)  "{{{2
   " a:pattern is not always prefixed with "{scheme}:".
   let scheme = a:source_name_ext
   let _ = scheme . ':' . a:pattern
-  return map(metarw#{scheme}#complete(_, _, 0)[0],
-  \          '{"word": matchstr(v:val, "^" . scheme . '':\zs.*$'')}')
+  let candidates = []
+  for path in metarw#{scheme}#complete(_, _, 0)[0]
+    let path_without_scheme = matchstr(path, '^' . scheme . ':\zs.*$')
+    call add(candidates, {
+    \   "abbr": path_without_scheme,
+    \   "word": substitute(path_without_scheme, '[:/]$', '', ''),
+    \ })
+  endfor
+  return candidates
 endfunction
 
 
